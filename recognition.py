@@ -3,7 +3,7 @@ import numpy as np
 import tensorflow as tf
 
 
-model = tf.keras.models.load_model("models/FER_custom.keras")  # tbd
+model = tf.keras.models.load_model("models/new.h5")  # tbd
 
 emotions = ["Angry", "Disgust", "Fear", "Happy", "Sad", "Surprise", "Neutral"]
 
@@ -35,7 +35,6 @@ while True:
     # Face Detection
     # DK if we will need it still keeping it.
     faces = face_detect(frame)
-
     """
     If we need to specify the number of faces to detect
 
