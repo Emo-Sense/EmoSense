@@ -3,7 +3,7 @@ import numpy as np
 import tensorflow as tf
 
 
-model = tf.keras.models.load_model("models/new.h5")  # tbd
+model = tf.keras.models.load_model("models/new_5912.h5")  # tbd
 
 emotions = ["Angry", "Disgust", "Fear", "Happy", "Sad", "Surprise", "Neutral"]
 
