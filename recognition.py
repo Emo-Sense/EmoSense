@@ -7,10 +7,12 @@ import tensorflow as tf
 tf.get_logger().setLevel("ERROR")
 
 
-output_directory = "outputs"
-model = tf.keras.models.load_model(r"models/best_weights.h5")
+output_directory = "output_samples"
+model = tf.keras.models.load_model(r"models\categorical_hundred_epochs_82acc.h5")
 
-# Classes are from the fer+ labels used with the fer2013 dataset
+# Emotion Classes are from the fer+ labels used with the fer2013 dataset
+# emotions = ["Neutral","Happy","Surprise","Sadness","Anger","Disgust","Fear","Contempt","Unknown","NF",]
+# Unknown and Not a Face (NF) removed during training
 emotions = [
     "Neutral",
     "Happy",
@@ -20,8 +22,6 @@ emotions = [
     "Disgust",
     "Fear",
     "Contempt",
-    "Unknown",
-    "NF",
 ]
 
 
@@ -29,9 +29,9 @@ emotions = [
 def face_detect(img):
     gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
     haar_cascade = cv.CascadeClassifier(
-        r"haar_cascades\haarcascade_frontalface_default.xml"
+        r"haar_cascades\haarcascade_frontalface_alt.xml"
     )
-    # scale factor : (the amount the image is scaled i.e. reduced ) lower =  more accurate but slwer processing
+    # scaleFactor : (the amount the image is scaled i.e. reduced ) lower =  more accurate but slower processing
     # minNeighbors : (specifies how many neighbors each face rectangle should have for it to be a face) higher = more accurate
     faces = haar_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=3)
     return faces
@@ -53,21 +53,39 @@ def detect_emotions_in_frame(frame):
         probabilities = [round(pred * 100, 2) for pred in predictions.tolist()[0]]
         max_index = np.argmax(predictions)
         emotion = f"{emotions[max_index]} {max(probabilities)}%"
-
         cv.putText(
-            frame, emotion, (x, y - 10), cv.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 1
+            frame,
+            emotion,
+            (x, y - 10),
+            cv.FONT_HERSHEY_SIMPLEX,
+            0.8,
+            (0,0, 0),
+            4,
+            lineType=cv.LINE_AA
         )
+        cv.putText(
+            frame,
+            emotion,
+            (x, y - 10),
+            cv.FONT_HERSHEY_SIMPLEX,
+            0.8,
+            (0, 255, 0),
+            1,
+            lineType=cv.LINE_AA
+        )
+        
         cv.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
     return frame
 
 
 # Only for process image and process video windows
 def resize_frame(image_path):
-    scale_percent = 80
-    width = int(image_path.shape[1] * scale_percent / 100)
-    height = int(image_path.shape[0] * scale_percent / 100)
-    dim = (width, height)
-    resized_image = cv.resize(image_path, dim, interpolation=cv.INTER_AREA)
+    resized_image = image_path
+    if image_path.shape[1] > 800 or image_path.shape[1] < 400:
+        new_width = 800
+        new_height = int((image_path.shape[0] / image_path.shape[1]) * new_width)
+        dim = (new_width, new_height)
+        resized_image = cv.resize(image_path, dim, interpolation=cv.INTER_AREA)
     return resized_image
 
 
@@ -79,14 +97,15 @@ def process_image(image_path):
         return
     print("Processing Image..... ")
 
-    result_image = detect_emotions_in_frame(image)
+    result_image = detect_emotions_in_frame(resize_frame(image))
 
-    filename = image_path.split("\\")[-1]
+    filename = image_path.split(r"\\")[-1]
     output_path = f"{output_directory}/{filename.rsplit('.', 1)[0]}_result.{filename.rsplit('.', 1)[1]}"
+
     cv.imwrite(output_path, result_image)
 
     print(f"Processed image saved as {output_path}")
-    cv.imshow("Processed Image", resize_frame(result_image))
+    cv.imshow("Processed Image", result_image)
 
     while True:
         if cv.getWindowProperty("Processed Image", cv.WND_PROP_VISIBLE) < 1:
@@ -120,9 +139,9 @@ def process_video(video_path):
         ret, frame = video.read()
         if not ret:
             break
-        result_frame = detect_emotions_in_frame(frame)
+        result_frame = detect_emotions_in_frame(resize_frame(frame))
         out.write(result_frame)
-        cv.imshow("Video Emotion Detection", resize_frame(result_frame))
+        cv.imshow("Video Emotion Detection", result_frame)
         if cv.waitKey(1) == ord("q") or (
             cv.getWindowProperty("Video Emotion Detection", cv.WND_PROP_VISIBLE) < 1
         ):
@@ -172,3 +191,5 @@ if __name__ == "__main__":
             "  python recognition.py video.mp4/mov/mkv/avi  # For emotion detection in a video"
         )
         print("  Note: Enclose filepaths within quotes")
+        print("  Eg : python recognition.py input_samples\\sample1.jpg")
+        print(r"  Avoid use of / or \ or //")
