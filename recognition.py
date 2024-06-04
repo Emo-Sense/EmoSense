@@ -1,4 +1,5 @@
 import sys
+import os
 import cv2 as cv
 import numpy as np
 import tensorflow as tf
@@ -99,8 +100,9 @@ def process_image(image_path):
 
     result_image = detect_emotions_in_frame(resize_frame(image))
 
-    filename = image_path.split(r"\\")[-1]
-    output_path = f"{output_directory}/{filename.rsplit('.', 1)[0]}_result.{filename.rsplit('.', 1)[1]}"
+    filename = os.path.basename(image_path)
+    file_root, file_ext = os.path.splitext(filename)
+    output_path = os.path.join(output_directory, f"{file_root}_result{file_ext}")
 
     cv.imwrite(output_path, result_image)
 
@@ -121,9 +123,10 @@ def process_video(video_path):
     if not video.isOpened():
         print(f"Error: Unable to open video {video_path}")
         return
-
-    filename = video_path.split("\\")[-1]
-    output_path = f"{output_directory}/{filename.rsplit('.', 1)[0]}_result.{filename.rsplit('.', 1)[1]}"
+    
+    filename = os.path.basename(video_path)
+    file_root, file_ext = os.path.splitext(filename)
+    output_path = os.path.join(output_directory, f"{file_root}_result{file_ext}")
 
     fourcc = cv.VideoWriter_fourcc(*"XVID")
     out = cv.VideoWriter(
@@ -191,5 +194,4 @@ if __name__ == "__main__":
             "  python recognition.py video.mp4/mov/mkv/avi  # For emotion detection in a video"
         )
         print("  Note: Enclose filepaths within quotes")
-        print("  Eg : python recognition.py input_samples\\sample1.jpg")
-        print(r"  Avoid use of / or \ or //")
+        print("  Eg : python recognition.py input_samples\sample1.jpg")
