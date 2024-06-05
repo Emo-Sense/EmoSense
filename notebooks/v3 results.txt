@@ -1,8 +1,0 @@
-Training results in EmoSense_v3
-
-batch size 100 epochs 20 train acc= 76 val acc = 63 test acc = 57.5
-batch size 64 epochs 20 train acc = 77.44 val acc = 64.12 test acc = 58.68
-batch size 32 epochs 20 train acc = 76.13 val acc = 63.79 test acc = 58.88
-batch size 32 epochs 50 train acc = 75.68 val acc = 63.50 test acc = 58.08
-batch size 64 epochs 50 train acc = 76.87 val acc = 64.68 test acc = 59.12 (With LR)
-batch size 64 epochs 50 train acc = 80.06 val acc = 66.90 test acc = 61.58 (With LR) and validation as test
