@@ -9,7 +9,7 @@ tf.get_logger().setLevel("ERROR")
 
 
 output_directory = "output_samples"
-model = tf.keras.models.load_model(r"models\categorical_hundred_epochs_82acc.h5")
+model = tf.keras.models.load_model(r"models\emosense_model_82.h5")
 
 # Emotion Classes are from the fer+ labels used with the fer2013 dataset
 # emotions = ["Neutral","Happy","Surprise","Sadness","Anger","Disgust","Fear","Contempt","Unknown","NF",]
