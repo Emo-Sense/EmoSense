@@ -194,4 +194,4 @@ if __name__ == "__main__":
             "  python recognition.py video.mp4/mov/mkv/avi  # For emotion detection in a video"
         )
         print("  Note: Enclose filepaths within quotes")
-        print("  Eg : python recognition.py input_samples\sample1.jpg")
+        print("  Eg : python recognition.py input_samples/sample1.jpg")
