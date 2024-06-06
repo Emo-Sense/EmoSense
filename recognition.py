@@ -9,11 +9,11 @@ tf.get_logger().setLevel("ERROR")
 
 
 output_directory = "output_samples"
-model = tf.keras.models.load_model(r"models\emosense_model_82.h5")
+model = tf.keras.models.load_model(r"models\emosense_finalmodel_82.h5")
 
 # Emotion Classes are from the fer+ labels used with the fer2013 dataset
 # emotions = ["Neutral","Happy","Surprise","Sadness","Anger","Disgust","Fear","Contempt","Unknown","NF",]
-# Unknown and Not a Face (NF) removed during training
+# Contempt, Unknown and Not a Face (NF) removed during training
 emotions = [
     "Neutral",
     "Happy",
@@ -22,7 +22,6 @@ emotions = [
     "Anger",
     "Disgust",
     "Fear",
-    "Contempt",
 ]
 
 
@@ -52,8 +51,10 @@ def detect_emotions_in_frame(frame):
 
         predictions = model.predict(reshaped_face)
         probabilities = [round(pred * 100, 2) for pred in predictions.tolist()[0]]
+        
         max_index = np.argmax(predictions)
         emotion = f"{emotions[max_index]} {max(probabilities)}%"
+            
         cv.putText(
             frame,
             emotion,
