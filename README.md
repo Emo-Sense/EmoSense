@@ -52,7 +52,7 @@ pip install -r requirements.txt
 The best model exceeds the GiHub storage limit so it is stored in a Google Drive folder. You can download and move it to the ```models/``` folder using :
 
 ```sh
-gdown https://drive.google.com/uc?id=1zfGYRncWUr5Rhs8VdBlWTqbA-uYZVOwC -O models/emosense_model_82.h5
+gdown https://drive.google.com/uc?id=1NnJ5ObGiN-_LbTUohvjxES3koHjPgxsH -O models/emosense_finalmodel_82.h5
 ```
 
 ## Usage
