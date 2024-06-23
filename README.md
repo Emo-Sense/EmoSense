@@ -2,6 +2,10 @@
 
 EmoSense is a real-time emotion detection tool that can recognize emotions from live video feeds, images, and videos. The project utilizes `OpenCV` for capturing and processing frames, creating the user interface, and drawing on faces, `Haar cascades` to efficiently detect and extract faces and a TensorFlow-trained `CNN model` to detect facial emotions with high accuracy.
 
+<p align="center">
+  <img src=./output_samples/team0_result.jpg alt="team img"/>
+</p>
+
 # Installation
 
 ### Prerequisites
