@@ -54,7 +54,7 @@ def detect_emotions_in_frame(frame):
         
         max_index = np.argmax(predictions)
         emotion = f"{emotions[max_index]} {max(probabilities)}%"
-            
+        
         cv.putText(
             frame,
             emotion,
@@ -124,7 +124,7 @@ def process_video(video_path):
     if not video.isOpened():
         print(f"Error: Unable to open video {video_path}")
         return
-    
+
     filename = os.path.basename(video_path)
     file_root, file_ext = os.path.splitext(filename)
     output_path = os.path.join(output_directory, f"{file_root}_result{file_ext}")
@@ -143,7 +143,7 @@ def process_video(video_path):
         ret, frame = video.read()
         if not ret:
             break
-        result_frame = detect_emotions_in_frame(resize_frame(frame))
+        result_frame = detect_emotions_in_frame(frame)
         out.write(result_frame)
         cv.imshow("Video Emotion Detection", result_frame)
         if cv.waitKey(1) == ord("q") or (
