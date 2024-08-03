@@ -53,10 +53,10 @@ pip install -r requirements.txt
 
 #### 5. Download the model
 
-The best model exceeds the GiHub storage limit so it is stored in a Google Drive folder. You can download and move it to the `models/` folder using :
+You can download and move the weights from `releases` to the `models/` folder using :
 
 ```sh
-gdown https://drive.google.com/uc?id=1NnJ5ObGiN-_LbTUohvjxES3koHjPgxsH -O models/emosense_finalmodel_82.h5
+curl -L -o models/emosense_finalmodel_82.h5 https://github.com/Emo-Sense/EmoSense/releases/download/v1.0.0/emosense_finalmodel_82.h5
 ```
 
 # Usage
